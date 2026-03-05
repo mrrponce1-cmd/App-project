@@ -126,7 +126,12 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.circular(18),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (_) => DashboardPage()),
+                    );
+                  },
                   child: Text(
                     "Log In",
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
