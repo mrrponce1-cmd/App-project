@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'inventory.dart';  // Changed from retail_inventory.dart
+import 'inventory.dart';
 import 'sales.dart';
+import 'profile.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
@@ -15,18 +16,22 @@ class DashboardPage extends StatelessWidget {
         elevation: 0,
         title: Row(
           children: [
-            // Chef hat icon matching inventory page style
             Container(
               width: 32,
               height: 32,
               decoration: BoxDecoration(
-                color: Colors.orange[400],
-                shape: BoxShape.circle,
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(8),
               ),
-              child: const Icon(
-                Icons.restaurant,
-                color: Colors.white,
-                size: 18,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Icon(Icons.image, color: Colors.grey[600], size: 20);
+                  },
+                ),
               ),
             ),
             const SizedBox(width: 10),
@@ -46,7 +51,6 @@ class DashboardPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Dashboard Title
             const Text(
               "Dashboard",
               style: TextStyle(
@@ -57,7 +61,6 @@ class DashboardPage extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            // Today's Sales Card - Enhanced with gradient
             Container(
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
@@ -68,7 +71,7 @@ class DashboardPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
+                    color: Colors.grey,
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -105,7 +108,7 @@ class DashboardPage extends StatelessWidget {
                         vertical: 8,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.green.withOpacity(0.1),
+                        color: Colors.green,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Row(
@@ -134,12 +137,11 @@ class DashboardPage extends StatelessWidget {
 
             const SizedBox(height: 16),
 
-            // Inventory Card - Now redirects to box_inventory.dart
             GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => const InventoryPage()),  // Changed to InventoryPage from box_inventory.dart
+                  MaterialPageRoute(builder: (_) => const InventoryPage()),
                 );
               },
               child: Container(
@@ -148,7 +150,7 @@ class DashboardPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.1),
+                      color: Colors.grey,
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
@@ -160,7 +162,7 @@ class DashboardPage extends StatelessWidget {
                     width: 50,
                     height: 50,
                     decoration: BoxDecoration(
-                      color: Colors.blue.withOpacity(0.1),
+                      color: Colors.blue,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: const Icon(
@@ -195,7 +197,6 @@ class DashboardPage extends StatelessWidget {
 
             const SizedBox(height: 12),
 
-            // Sales Card
             GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -209,7 +210,7 @@ class DashboardPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.1),
+                      color: Colors.grey,
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
@@ -221,7 +222,7 @@ class DashboardPage extends StatelessWidget {
                     width: 50,
                     height: 50,
                     decoration: BoxDecoration(
-                      color: Colors.orange.withOpacity(0.1),
+                      color: Colors.orange,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: const Icon(
@@ -255,7 +256,6 @@ class DashboardPage extends StatelessWidget {
 
             const SizedBox(height: 16),
 
-            // Low Stock Alert - Enhanced warning design
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -267,7 +267,7 @@ class DashboardPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.red.withOpacity(0.3),
+                    color: Colors.red,
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -357,13 +357,12 @@ class DashboardPage extends StatelessWidget {
         ),
       ),
 
-      // Bottom Navigation - Custom styled to match inventory page
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
+              color: Colors.grey,
               blurRadius: 10,
               offset: const Offset(0, -5),
             ),
@@ -375,10 +374,28 @@ class DashboardPage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildNavItem(Icons.home_outlined, "Dashboard", 0, true),
-                _buildNavItem(Icons.assignment_outlined, "Transactions", 1, false),
-                _buildNavItem(Icons.bar_chart_outlined, "Sales", 2, false),
-                _buildNavItem(Icons.person_outline, "Profile", 3, false),
+                // Dashboard - currently selected, does nothing on tap
+                _buildNavItem(Icons.home_outlined, "Dashboard", 0, true, () {
+                  // Already on dashboard, do nothing
+                }),
+                // Transactions - placeholder for now
+                _buildNavItem(Icons.assignment_outlined, "Transactions", 1, false, () {
+                  // TODO: Navigate to Transactions page when created
+                }),
+                // Sales - navigates to SalesPage
+                _buildNavItem(Icons.bar_chart_outlined, "Sales", 2, false, () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const SalesPage()),
+                  );
+                }),
+                // Profile - navigates to ProfilePage
+                _buildNavItem(Icons.person_outline, "Profile", 3, false, () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const ProfilePage()),
+                  );
+                }),
               ],
             ),
           ),
@@ -392,11 +409,10 @@ class DashboardPage extends StatelessWidget {
     String label,
     int index,
     bool isSelected,
+    VoidCallback onTap,
   ) {
     return GestureDetector(
-      onTap: () {
-        // Handle navigation
-      },
+      onTap: onTap,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
